@@ -1073,8 +1073,19 @@ static inline uint32_t DSPI_ReadData(SPI_Type *base)
  *
  * @param base DSPI peripheral address.
  * @param dummyData Data to be transferred when tx buffer is NULL.
+ * 
+ * @note This version of the dummy data setter will construct the upper 8 bits of the dummy data
+ *    to be the same as the lower 8 bits.
  */
 void DSPI_SetDummyData(SPI_Type *base, uint8_t dummyData);
+
+/*!
+ * @brief Set up the dummy data as a 16-bit value.
+ *
+ * @param base DSPI peripheral address.
+ * @param dummyData Data to be transferred when tx buffer is NULL.
+ */
+void DSPI_SetDummyData16Bit(SPI_Type *base, uint16_t dummyData);
 
 /*!
  *@}
@@ -1266,7 +1277,7 @@ void DSPI_SlaveTransferHandleIRQ(SPI_Type *base, dspi_slave_handle_t *handle);
  *
  * param base DSPI peripheral base address.
  */
-uint8_t DSPI_GetDummyDataInstance(SPI_Type *base);
+uint16_t DSPI_GetDummyDataInstance(SPI_Type *base);
 
 /*!
  * @brief Common IRQ handler for DSPI, which can be used for DSPI IRQ remapping.

@@ -1,0 +1,305 @@
+﻿I am working on MK64F support in Mbed Community Edition, and noticed some issues related to the dummy 
+data support in the DSPI peripheral driver. Specifically:
+
+* For transfers done using the fsl_dspi driver, if the SPI frame size is >8, the upper 8 bits are always 
+    sent as 0s, regardless of dummy data setting.
+* For transfers done using the fsl_dspi_edma driver, the upper 8 bits always match the bottom 8 bits. 
+    This is most of the time what you want, but why not let the user change it?
+
+This patch fixes this by widening the dummy data variable to 16 bits. If the old-style DSPI_SetDummyData 
+version is used, the upper 8 bits are set to match the lower 8 bits. This means that the non-DMA driver 
+now matches the DMA version's behavior. If the new DSPI_SetDummyData16Bit function is called instead, 
+the entire 16-bit dummy word can be set at once.
+
+diff --git a/drivers/dspi/fsl_dspi.c b/drivers/dspi/fsl_dspi.c
+index 0fa6fb2..789cbc2 100644
+--- a/drivers/dspi/fsl_dspi.c
++++ b/drivers/dspi/fsl_dspi.c
+@@ -123,7 +123,7 @@ static dspi_slave_isr_t s_dspiSlaveIsr;
+ #endif
+ 
+ /* @brief Dummy data for each instance. This data is used when user's tx buffer is NULL*/
+-volatile uint8_t g_dspiDummyData[ARRAY_SIZE(s_dspiBases)] = {0};
++volatile uint16_t g_dspiDummyData[ARRAY_SIZE(s_dspiBases)] = {0};
+ /**********************************************************************************************************************
+  * Code
+  *********************************************************************************************************************/
+@@ -158,20 +158,20 @@ uint32_t DSPI_GetInstance(SPI_Type *base)
+  *
+  * param base DSPI peripheral base address.
+  */
+-uint8_t DSPI_GetDummyDataInstance(SPI_Type *base)
++uint16_t DSPI_GetDummyDataInstance(SPI_Type *base)
+ {
+-    uint8_t instance = g_dspiDummyData[DSPI_GetInstance(base)];
++    uint16_t instance = g_dspiDummyData[DSPI_GetInstance(base)];
+ 
+     return instance;
+ }
+ 
+-/*!
+- * brief Set up the dummy data.
+- *
+- * param base DSPI peripheral address.
+- * param dummyData Data to be transferred when tx buffer is NULL.
+- */
+ void DSPI_SetDummyData(SPI_Type *base, uint8_t dummyData)
++{
++    uint32_t instance         = DSPI_GetInstance(base);
++    g_dspiDummyData[instance] = (((uint16_t)dummyData << 8U) | (uint16_t)dummyData);
++}
++
++void DSPI_SetDummyData16Bit(SPI_Type *base, uint16_t dummyData)
+ {
+     uint32_t instance         = DSPI_GetInstance(base);
+     g_dspiDummyData[instance] = dummyData;
+@@ -902,7 +902,7 @@ status_t DSPI_MasterTransferBlocking(SPI_Type *base, dspi_transfer_t *transfer)
+ 
+     uint16_t wordToSend   = 0;
+     uint16_t wordReceived = 0;
+-    uint8_t dummyData     = DSPI_GetDummyDataInstance(base);
++    uint16_t dummyData     = DSPI_GetDummyDataInstance(base);
+     uint8_t bitsPerFrame;
+ 
+     uint32_t command;
+@@ -1454,7 +1454,7 @@ static void DSPI_MasterTransferFillUpTxFifo(SPI_Type *base, dspi_master_handle_t
+     assert(NULL != handle);
+ 
+     uint16_t wordToSend                 = 0;
+-    uint8_t dummyData                   = DSPI_GetDummyDataInstance(base);
++    uint16_t dummyData                   = DSPI_GetDummyDataInstance(base);
+     size_t tmpRemainingSendByteCount    = handle->remainingSendByteCount;
+     size_t tmpRemainingReceiveByteCount = handle->remainingReceiveByteCount;
+     uint8_t tmpFifoSize                 = handle->fifoSize;
+@@ -1872,7 +1872,7 @@ static void DSPI_SlaveTransferFillUpTxFifo(SPI_Type *base, dspi_slave_handle_t *
+     assert(NULL != handle);
+ 
+     uint16_t transmitData = 0;
+-    uint8_t dummyPattern  = DSPI_GetDummyDataInstance(base);
++    uint16_t dummyPattern  = DSPI_GetDummyDataInstance(base);
+ 
+     /* Service the transmitter, if transmit buffer provided, transmit the data,
+      * else transmit dummy pattern
+@@ -2038,7 +2038,7 @@ void DSPI_SlaveTransferHandleIRQ(SPI_Type *base, dspi_slave_handle_t *handle)
+ {
+     assert(NULL != handle);
+ 
+-    uint8_t dummyPattern = DSPI_GetDummyDataInstance(base);
++    uint16_t dummyPattern = DSPI_GetDummyDataInstance(base);
+     uint32_t dataReceived;
+     uint32_t dataSend                     = 0;
+     uint32_t tmpRemainingReceiveByteCount = 0;
+diff --git a/drivers/dspi/fsl_dspi.h b/drivers/dspi/fsl_dspi.h
+index 27428ad..0a87cc5 100644
+--- a/drivers/dspi/fsl_dspi.h
++++ b/drivers/dspi/fsl_dspi.h
+@@ -1073,9 +1073,20 @@ static inline uint32_t DSPI_ReadData(SPI_Type *base)
+  *
+  * @param base DSPI peripheral address.
+  * @param dummyData Data to be transferred when tx buffer is NULL.
++ * 
++ * @note This version of the dummy data setter will construct the upper 8 bits of the dummy data
++ *    to be the same as the lower 8 bits.
+  */
+ void DSPI_SetDummyData(SPI_Type *base, uint8_t dummyData);
+ 
++/*!
++ * @brief Set up the dummy data as a 16-bit value.
++ *
++ * @param base DSPI peripheral address.
++ * @param dummyData Data to be transferred when tx buffer is NULL.
++ */
++void DSPI_SetDummyData16Bit(SPI_Type *base, uint16_t dummyData);
++
+ /*!
+  *@}
+  */
+@@ -1266,7 +1277,7 @@ void DSPI_SlaveTransferHandleIRQ(SPI_Type *base, dspi_slave_handle_t *handle);
+  *
+  * param base DSPI peripheral base address.
+  */
+-uint8_t DSPI_GetDummyDataInstance(SPI_Type *base);
++uint16_t DSPI_GetDummyDataInstance(SPI_Type *base);
+ 
+ /*!
+  * @brief Common IRQ handler for DSPI, which can be used for DSPI IRQ remapping.
+diff --git a/drivers/dspi/fsl_dspi_dma.c b/drivers/dspi/fsl_dspi_dma.c
+index 3fca7b8..57c2269 100644
+--- a/drivers/dspi/fsl_dspi_dma.c
++++ b/drivers/dspi/fsl_dspi_dma.c
+@@ -154,7 +154,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+ 
+     uint32_t instance           = DSPI_GetInstance(base);
+     uint16_t wordToSend         = 0;
+-    uint8_t dummyData           = g_dspiDummyData[instance];
++    uint16_t dummyData           = g_dspiDummyData[instance];
+     uint8_t dataAlreadyFed      = 0;
+     uint8_t dataFedMax          = 2;
+     bool writeOneDataAfterStart = false;
+@@ -168,7 +168,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+ 
+     dma_channel_link_config_t channelConfig;
+ 
+-    handle->txBuffIfNull = ((uint32_t)dummyData << 8) | dummyData;
++    handle->txBuffIfNull = dummyData;
+ 
+     handle->state = kDSPI_Busy;
+ 
+@@ -240,7 +240,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+                 }
+                 else
+                 {
+-                    wordToSend = ((uint32_t)dummyData << 8) | dummyData;
++                    wordToSend = dummyData;
+                 }
+                 handle->lastCommand = (handle->lastCommand & 0xffff0000U) | wordToSend;
+             }
+@@ -255,7 +255,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+                 }
+                 else
+                 {
+-                    wordToSend = ((uint32_t)dummyData << 8) | dummyData;
++                    wordToSend = dummyData;
+                 }
+                 handle->command = (handle->command & 0xffff0000U) | wordToSend;
+             }
+@@ -305,7 +305,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+                     }
+                     else
+                     {
+-                        wordToSend = ((uint32_t)dummyData << 8) | dummyData;
++                        wordToSend = dummyData;
+                     }
+                     handle->remainingSendByteCount = 0;
+                     base->PUSHR                    = (handle->lastCommand & 0xffff0000U) | wordToSend;
+@@ -322,7 +322,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+                     }
+                     else
+                     {
+-                        wordToSend = ((uint32_t)dummyData << 8) | dummyData;
++                        wordToSend = dummyData;
+                     }
+                     handle->remainingSendByteCount -= 2;
+                     base->PUSHR = (handle->command & 0xffff0000U) | wordToSend;
+@@ -501,14 +501,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
+         }
+         else
+         {
+-            if (handle->bitsPerFrame <= 8)
+-            {
+-                wordToSend = dummyData;
+-            }
+-            else
+-            {
+-                wordToSend = ((uint32_t)dummyData << 8) | dummyData;
+-            }
++            wordToSend = dummyData;
+             handle->lastCommand = (handle->lastCommand & 0xffff0000U) | wordToSend;
+         }
+     }
+@@ -824,7 +817,7 @@ status_t DSPI_SlaveTransferDMA(SPI_Type *base, dspi_slave_dma_handle_t *handle,
+     handle->errorCount                = 0;
+ 
+     uint16_t wordToSend    = 0;
+-    uint8_t dummyData      = g_dspiDummyData[instance];
++    uint16_t dummyData      = g_dspiDummyData[instance];
+     uint8_t dataAlreadyFed = 0;
+     uint8_t dataFedMax     = 2;
+ 
+@@ -866,7 +859,7 @@ status_t DSPI_SlaveTransferDMA(SPI_Type *base, dspi_slave_dma_handle_t *handle,
+                 }
+                 else
+                 {
+-                    wordToSend = ((uint32_t)dummyData << 8) | dummyData;
++                    wordToSend = dummyData;
+                 }
+                 handle->remainingSendByteCount -= 2;
+                 base->PUSHR_SLAVE = wordToSend;
+@@ -969,14 +962,7 @@ status_t DSPI_SlaveTransferDMA(SPI_Type *base, dspi_slave_dma_handle_t *handle,
+         {
+             transferConfigC.srcAddr            = (uint32_t)(&handle->txBuffIfNull);
+             transferConfigC.enableSrcIncrement = false;
+-            if (handle->bitsPerFrame <= 8)
+-            {
+-                handle->txBuffIfNull = dummyData;
+-            }
+-            else
+-            {
+-                handle->txBuffIfNull = ((uint32_t)dummyData << 8) | dummyData;
+-            }
++            handle->txBuffIfNull = dummyData;
+         }
+ 
+         transferConfigC.srcSize = kDMA_Transfersize8bits;
+diff --git a/drivers/dspi/fsl_dspi_edma.c b/drivers/dspi/fsl_dspi_edma.c
+index d733f5b..d959228 100644
+--- a/drivers/dspi/fsl_dspi_edma.c
++++ b/drivers/dspi/fsl_dspi_edma.c
+@@ -167,7 +167,7 @@ status_t DSPI_MasterTransferEDMA(SPI_Type *base, dspi_master_edma_handle_t *hand
+ 
+     uint32_t instance                = DSPI_GetInstance(base);
+     uint16_t wordToSend              = 0;
+-    uint8_t dummyData                = DSPI_GetDummyDataInstance(base);
++    uint16_t dummyData                = DSPI_GetDummyDataInstance(base);
+     uint8_t dataAlreadyFed           = 0;
+     uint8_t dataFedMax               = 2;
+     uint32_t tmpMCR                  = 0;
+@@ -181,7 +181,7 @@ status_t DSPI_MasterTransferEDMA(SPI_Type *base, dspi_master_edma_handle_t *hand
+     edma_transfer_config_t transferConfigA = {0};
+     edma_transfer_config_t transferConfigB = {0};
+ 
+-    handle->txBuffIfNull = ((uint32_t)dummyData << 8U) | dummyData;
++    handle->txBuffIfNull = dummyData;
+ 
+     dspi_command_data_config_t commandStruct;
+     DSPI_StopTransfer(base);
+@@ -519,14 +519,7 @@ status_t DSPI_MasterTransferEDMA(SPI_Type *base, dspi_master_edma_handle_t *hand
+         }
+         else
+         {
+-            if (handle->bitsPerFrame <= 8U)
+-            {
+-                wordToSend = dummyData;
+-            }
+-            else
+-            {
+-                wordToSend = (((uint16_t)dummyData << 8U) | (uint16_t)dummyData);
+-            }
++            wordToSend = dummyData;
+             handle->lastCommand = (handle->lastCommand & 0xffff0000U) | wordToSend;
+         }
+     }
+@@ -1228,7 +1221,7 @@ status_t DSPI_SlaveTransferEDMA(SPI_Type *base, dspi_slave_edma_handle_t *handle
+     handle->totalByteCount            = transfer->dataSize;
+ 
+     uint32_t wordToSend    = 0;
+-    uint8_t dummyData      = DSPI_GetDummyDataInstance(base);
++    uint16_t dummyData      = DSPI_GetDummyDataInstance(base);
+     uint8_t dataAlreadyFed = 0;
+     uint8_t dataFedMax     = 2;
+ 
+@@ -1271,7 +1264,7 @@ status_t DSPI_SlaveTransferEDMA(SPI_Type *base, dspi_slave_edma_handle_t *handle
+                 }
+                 else
+                 {
+-                    wordToSend = ((uint32_t)dummyData << 8U) | dummyData;
++                    wordToSend = dummyData;
+                 }
+                 handle->remainingSendByteCount -= 2U; /* decrement remainingSendByteCount by 2 */
+                 base->PUSHR_SLAVE = wordToSend;
+@@ -1382,14 +1375,7 @@ status_t DSPI_SlaveTransferEDMA(SPI_Type *base, dspi_slave_edma_handle_t *handle
+         {
+             transferConfigC.srcAddr   = (uint32_t)(&handle->txBuffIfNull);
+             transferConfigC.srcOffset = 0;
+-            if (handle->bitsPerFrame <= 8U)
+-            {
+-                handle->txBuffIfNull = dummyData;
+-            }
+-            else
+-            {
+-                handle->txBuffIfNull = ((uint32_t)dummyData << 8U) | dummyData;
+-            }
++            handle->txBuffIfNull = dummyData;
+         }
+ 
+         transferConfigC.srcTransferSize = kEDMA_TransferSize1Bytes;

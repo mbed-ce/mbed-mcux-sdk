@@ -154,7 +154,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
 
     uint32_t instance           = DSPI_GetInstance(base);
     uint16_t wordToSend         = 0;
-    uint8_t dummyData           = g_dspiDummyData[instance];
+    uint16_t dummyData           = g_dspiDummyData[instance];
     uint8_t dataAlreadyFed      = 0;
     uint8_t dataFedMax          = 2;
     bool writeOneDataAfterStart = false;
@@ -168,7 +168,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
 
     dma_channel_link_config_t channelConfig;
 
-    handle->txBuffIfNull = ((uint32_t)dummyData << 8) | dummyData;
+    handle->txBuffIfNull = dummyData;
 
     handle->state = kDSPI_Busy;
 
@@ -240,7 +240,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
                 }
                 else
                 {
-                    wordToSend = ((uint32_t)dummyData << 8) | dummyData;
+                    wordToSend = dummyData;
                 }
                 handle->lastCommand = (handle->lastCommand & 0xffff0000U) | wordToSend;
             }
@@ -255,7 +255,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
                 }
                 else
                 {
-                    wordToSend = ((uint32_t)dummyData << 8) | dummyData;
+                    wordToSend = dummyData;
                 }
                 handle->command = (handle->command & 0xffff0000U) | wordToSend;
             }
@@ -305,7 +305,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
                     }
                     else
                     {
-                        wordToSend = ((uint32_t)dummyData << 8) | dummyData;
+                        wordToSend = dummyData;
                     }
                     handle->remainingSendByteCount = 0;
                     base->PUSHR                    = (handle->lastCommand & 0xffff0000U) | wordToSend;
@@ -322,7 +322,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
                     }
                     else
                     {
-                        wordToSend = ((uint32_t)dummyData << 8) | dummyData;
+                        wordToSend = dummyData;
                     }
                     handle->remainingSendByteCount -= 2;
                     base->PUSHR = (handle->command & 0xffff0000U) | wordToSend;
@@ -501,14 +501,7 @@ status_t DSPI_MasterTransferDMA(SPI_Type *base, dspi_master_dma_handle_t *handle
         }
         else
         {
-            if (handle->bitsPerFrame <= 8)
-            {
-                wordToSend = dummyData;
-            }
-            else
-            {
-                wordToSend = ((uint32_t)dummyData << 8) | dummyData;
-            }
+            wordToSend = dummyData;
             handle->lastCommand = (handle->lastCommand & 0xffff0000U) | wordToSend;
         }
     }
@@ -824,7 +817,7 @@ status_t DSPI_SlaveTransferDMA(SPI_Type *base, dspi_slave_dma_handle_t *handle, 
     handle->errorCount                = 0;
 
     uint16_t wordToSend    = 0;
-    uint8_t dummyData      = g_dspiDummyData[instance];
+    uint16_t dummyData      = g_dspiDummyData[instance];
     uint8_t dataAlreadyFed = 0;
     uint8_t dataFedMax     = 2;
 
@@ -866,7 +859,7 @@ status_t DSPI_SlaveTransferDMA(SPI_Type *base, dspi_slave_dma_handle_t *handle, 
                 }
                 else
                 {
-                    wordToSend = ((uint32_t)dummyData << 8) | dummyData;
+                    wordToSend = dummyData;
                 }
                 handle->remainingSendByteCount -= 2;
                 base->PUSHR_SLAVE = wordToSend;
@@ -969,14 +962,7 @@ status_t DSPI_SlaveTransferDMA(SPI_Type *base, dspi_slave_dma_handle_t *handle, 
         {
             transferConfigC.srcAddr            = (uint32_t)(&handle->txBuffIfNull);
             transferConfigC.enableSrcIncrement = false;
-            if (handle->bitsPerFrame <= 8)
-            {
-                handle->txBuffIfNull = dummyData;
-            }
-            else
-            {
-                handle->txBuffIfNull = ((uint32_t)dummyData << 8) | dummyData;
-            }
+            handle->txBuffIfNull = dummyData;
         }
 
         transferConfigC.srcSize = kDMA_Transfersize8bits;
