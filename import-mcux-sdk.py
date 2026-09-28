@@ -49,6 +49,7 @@ shutil.copytree(mcux_devices_kinetis_path / "K" / "MK22F51212", devices_path / "
 shutil.copytree(mcux_devices_kinetis_path / "K" / "periph20", devices_path / "kinetis" / "MK22F51212" / "periph", dirs_exist_ok=True)
 
 # Legacy Kinetis MCUs
+shutil.copytree(legacy_mcux_sdk_path / "devices" / "MKW41Z4", devices_path / "kinetis" / "MKW41Z4", dirs_exist_ok=True)
 shutil.copytree(legacy_mcux_sdk_path / "devices" / "MK64F12", devices_path / "kinetis" / "MK64F12", dirs_exist_ok=True)
 shutil.copytree(legacy_mcux_sdk_path / "devices" / "MK66F18", devices_path / "kinetis" / "MK66F18", dirs_exist_ok=True)
 shutil.copytree(legacy_mcux_sdk_path / "devices" / "MK82F25615", devices_path / "kinetis" / "MK82F25615", dirs_exist_ok=True)
