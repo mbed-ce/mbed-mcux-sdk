@@ -1,0 +1,1 @@
+This folder contains device definitions for devices that are too old to be found in even the mcux-sdk-legacy repo. These device definitions were downloaded manually via the MCUX SDK builder.
