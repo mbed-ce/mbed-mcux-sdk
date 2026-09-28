@@ -1073,7 +1073,7 @@ static inline uint32_t DSPI_ReadData(SPI_Type *base)
  *
  * @param base DSPI peripheral address.
  * @param dummyData Data to be transferred when tx buffer is NULL.
- * 
+ *
  * @note This version of the dummy data setter will construct the upper 8 bits of the dummy data
  *    to be the same as the lower 8 bits.
  */

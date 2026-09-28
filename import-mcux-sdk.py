@@ -138,3 +138,8 @@ drivers_path = REPO_BASE_DIR / "drivers"
 drivers_path.mkdir(exist_ok=True)
 for driver in needed_fsl_hal_drivers:
     shutil.copytree(mcux_sdk_core_path / "drivers" / driver, drivers_path / driver, dirs_exist_ok=True)
+
+# Apply patch files
+for patch_file in sorted((REPO_BASE_DIR / "patches").glob("*.patch")):
+    print(f"Applying {patch_file.name}...")
+    subprocess.check_call([GIT_PATH, "apply", "--ignore-whitespace", str(patch_file.absolute())], cwd=REPO_BASE_DIR)
