@@ -103,6 +103,7 @@ needed_fsl_hal_drivers = [
     "dcdc", # MIMXRT10xx
     "pmc", # KL43Z
     "rcm", # KL43Z
+    "smc", # KL43Z
 
     # DMA
     "edma", # MIMXRT10xx

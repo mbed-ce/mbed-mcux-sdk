@@ -552,7 +552,7 @@ status_t DSPI_MasterTransferEDMA(SPI_Type *base, dspi_master_edma_handle_t *hand
         transferConfigB.destOffset       = 0;
         transferConfigB.minorLoopBytes   = 4;
         transferConfigB.majorLoopCounts  = 1;
-#if defined FSL_EDMA_DRIVER_EDMA4 && FSL_EDMA_DRIVER_EDMA4
+#if defined FSL_EDMA_DRIVER_UNIFIED && FSL_EDMA_DRIVER_UNIFIED
         EDMA_TcdResetExt(handle->edmaIntermediaryToTxRegHandle->base, softwareTCD);
         EDMA_TcdSetTransferConfigExt(handle->edmaIntermediaryToTxRegHandle->base, softwareTCD, &transferConfigB, NULL);
 #else
@@ -687,7 +687,7 @@ status_t DSPI_MasterTransferEDMA(SPI_Type *base, dspi_master_edma_handle_t *hand
         transferConfigB.destOffset       = 0;
         transferConfigB.minorLoopBytes   = 4;
         transferConfigB.majorLoopCounts  = 1;
-#if defined FSL_EDMA_DRIVER_EDMA4 && FSL_EDMA_DRIVER_EDMA4
+#if defined FSL_EDMA_DRIVER_UNIFIED && FSL_EDMA_DRIVER_UNIFIED
         EDMA_TcdResetExt(handle->edmaTxDataToIntermediaryHandle->base, softwareTCD);
         EDMA_TcdSetTransferConfigExt(handle->edmaTxDataToIntermediaryHandle->base,
                                      (const edma_transfer_config_t *)(uint32_t)&transferConfigB, NULL);
@@ -795,7 +795,7 @@ status_t DSPI_MasterTransferEDMA(SPI_Type *base, dspi_master_edma_handle_t *hand
         transferConfigC.minorLoopBytes   = 4;
         transferConfigC.majorLoopCounts  = 1;
 
-#if defined FSL_EDMA_DRIVER_EDMA4 && FSL_EDMA_DRIVER_EDMA4
+#if defined FSL_EDMA_DRIVER_UNIFIED && FSL_EDMA_DRIVER_UNIFIED
         EDMA_TcdResetExt(handle->edmaIntermediaryToTxRegHandle->base, softwareTCD);
         EDMA_TcdSetTransferConfigExt(handle->edmaIntermediaryToTxRegHandle->base,
                                      (const edma_transfer_config_t *)(uint32_t)&transferConfigC, NULL);
