@@ -472,7 +472,7 @@
     /* @brief Has data flash region protection (register FDPROT). */
     #define FSL_FEATURE_FLASH_HAS_DATA_FLASH_REGION_PROTECTION (0)
     /* @brief Has flash access control (registers XACCHn, SACCHn, where n is a number, FACSS and FACSN). */
-    #define FSL_FEATURE_FLASH_HAS_ACCESS_CONTROL (0)
+    #define FSL_FEATURE_FTFA_HAS_ACCESS_CONTROL (0)
     /* @brief Has flash cache control in FMC module. */
     #define FSL_FEATURE_FLASH_HAS_FMC_FLASH_CACHE_CONTROLS (0)
     /* @brief Has flash cache control in MCM module. */
@@ -484,21 +484,21 @@
     /* @brief P-Flash flash size coding rule version, value 0 for K1 and K2, value 1 for K3. */
     #define FSL_FEATURE_FLASH_SIZE_ENCODING_RULE_VERSION (0)
     /* @brief P-Flash start address. */
-    #define FSL_FEATURE_FLASH_PFLASH_START_ADDRESS (0x00000000)
+    #define FSL_FEATURE_FTFA_PFLASH_START_ADDRESS (0x00000000)
     /* @brief P-Flash block count. */
-    #define FSL_FEATURE_FLASH_PFLASH_BLOCK_COUNT (2)
+    #define FSL_FEATURE_FTFA_PFLASH_BLOCK_COUNT (2)
     /* @brief P-Flash block size. */
-    #define FSL_FEATURE_FLASH_PFLASH_BLOCK_SIZE (131072)
+    #define FSL_FEATURE_FTFA_PFLASH_BLOCK_SIZE (131072)
     /* @brief P-Flash sector size. */
-    #define FSL_FEATURE_FLASH_PFLASH_BLOCK_SECTOR_SIZE (1024)
+    #define FSL_FEATURE_FTFA_PFLASH_BLOCK_SECTOR_SIZE (1024)
     /* @brief P-Flash write unit size. */
-    #define FSL_FEATURE_FLASH_PFLASH_BLOCK_WRITE_UNIT_SIZE (4)
+    #define FSL_FEATURE_FTFA_PFLASH_BLOCK_WRITE_UNIT_SIZE (4)
     /* @brief P-Flash data path width. */
     #define FSL_FEATURE_FLASH_PFLASH_BLOCK_DATA_PATH_WIDTH (4)
     /* @brief P-Flash block swap feature. */
     #define FSL_FEATURE_FLASH_HAS_PFLASH_BLOCK_SWAP (0)
     /* @brief P-Flash protection region count. */
-    #define FSL_FEATURE_FLASH_PFLASH_PROTECTION_REGION_COUNT (32)
+    #define FSL_FEATURE_FTFA_PFLASH_PROTECTION_REGION_COUNT (32)
     /* @brief Has FlexNVM memory. */
     #define FSL_FEATURE_FLASH_HAS_FLEX_NVM (0)
     /* @brief Has FlexNVM alias. */
@@ -520,9 +520,9 @@
     /* @brief Has FlexRAM memory. */
     #define FSL_FEATURE_FLASH_HAS_FLEX_RAM (0)
     /* @brief FlexRAM start address. (Valid only if FlexRAM is available.) */
-    #define FSL_FEATURE_FLASH_FLEX_RAM_START_ADDRESS (0x00000000)
+    #define FSL_FEATURE_FTFA_FLEX_RAM_START_ADDRESS (0x00000000)
     /* @brief FlexRAM size. */
-    #define FSL_FEATURE_FLASH_FLEX_RAM_SIZE (0)
+    #define FSL_FEATURE_FTFA_FLEX_RAM_SIZE (0)
     /* @brief Has 0x00 Read 1s Block command. */
     #define FSL_FEATURE_FLASH_HAS_READ_1S_BLOCK_CMD (1)
     /* @brief Has 0x01 Read 1s Section command. */
@@ -566,15 +566,15 @@
     /* @brief P-Flash Erase/Read 1st all block command address alignment. */
     #define FSL_FEATURE_FLASH_PFLASH_BLOCK_CMD_ADDRESS_ALIGMENT (4)
     /* @brief P-Flash Erase sector command address alignment. */
-    #define FSL_FEATURE_FLASH_PFLASH_SECTOR_CMD_ADDRESS_ALIGMENT (4)
+    #define FSL_FEATURE_FTFA_PFLASH_SECTOR_CMD_ADDRESS_ALIGMENT (4)
     /* @brief P-Flash Rrogram/Verify section command address alignment. */
-    #define FSL_FEATURE_FLASH_PFLASH_SECTION_CMD_ADDRESS_ALIGMENT (4)
+    #define FSL_FEATURE_FTFA_PFLASH_SECTION_CMD_ADDRESS_ALIGMENT (4)
     /* @brief P-Flash Read resource command address alignment. */
-    #define FSL_FEATURE_FLASH_PFLASH_RESOURCE_CMD_ADDRESS_ALIGMENT (4)
+    #define FSL_FEATURE_FTFA_PFLASH_RESOURCE_CMD_ADDRESS_ALIGMENT (4)
     /* @brief P-Flash Program check command address alignment. */
-    #define FSL_FEATURE_FLASH_PFLASH_CHECK_CMD_ADDRESS_ALIGMENT (4)
+    #define FSL_FEATURE_FTFA_PFLASH_CHECK_CMD_ADDRESS_ALIGMENT (4)
     /* @brief P-Flash Program check command address alignment. */
-    #define FSL_FEATURE_FLASH_PFLASH_SWAP_CONTROL_CMD_ADDRESS_ALIGMENT (0)
+    #define FSL_FEATURE_FTFA_PFLASH_SWAP_CONTROL_CMD_ADDRESS_ALIGMENT (0)
     /* @brief FlexNVM Erase/Read 1st all block command address alignment. */
     #define FSL_FEATURE_FLASH_FLEX_NVM_BLOCK_CMD_ADDRESS_ALIGMENT (0)
     /* @brief FlexNVM Erase sector command address alignment. */
@@ -1581,6 +1581,10 @@
 #define FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(x) (0)
 /* @brief Is affected by errata with ID 050050 (Incorrect duty output when EPWM mode is set to PS=0 during write 1 to CnV register). */
 #define FSL_FEATURE_TPM_HAS_ERRATA_050050 (0)
+
+// Additional features added by Mbed
+#define FSL_FEATURE_TPM_HAS_32BIT_COUNTERn(x) (0)
+#define FSL_FEATURE_TPM_POL_HAS_EFFECTn(x) (1)
 
 /* UART module features */
 
