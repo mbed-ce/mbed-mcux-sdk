@@ -101,7 +101,7 @@ needed_fsl_hal_drivers = [
 
     # Power
     "dcdc", # MIMXRT10xx
-    "gpc", # MIMXRT10xx
+    "gpc_1", # MIMXRT10xx
     "pmc", # KL43Z
     "rcm", # KL43Z
     "smc", # KL43Z
@@ -131,10 +131,15 @@ needed_fsl_hal_drivers = [
 
     # Watchdogs
     "cop", # KL43Z
+    "rtwdog", # MIMXRT
+    "wdog01", # MIMXRT10xx
 
     # Flash access
     "dsc_flash", # KL43Z
     "flexspi", # MIMXRT
+
+    # Interconnects
+    "xbara", # MIMXRT105x_6x
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
