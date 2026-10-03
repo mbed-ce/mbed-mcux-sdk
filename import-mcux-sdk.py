@@ -133,6 +133,7 @@ needed_fsl_hal_drivers = [
 
     # Flash access
     "dsc_flash", # KL43Z
+    "flexspi", # MIMXRT
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
