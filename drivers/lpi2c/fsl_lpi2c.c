@@ -1366,7 +1366,7 @@ static void LPI2C_TransferStateMachineReadCommand(LPI2C_Type *base,
     }
     stateParams->txCount--;
 
-    uint16_t tmpChunk = MIN(handle->remainingBytes - handle->chunkSize, LPI2C_MAX_RX_SIZE);
+    uint16_t tmpChunk = MIN((uint16_t)(handle->remainingBytes - handle->chunkSize), LPI2C_MAX_RX_SIZE);
     assert(tmpChunk >= 1U);
     base->MTDR = (uint32_t)kRxDataCmd | LPI2C_MTDR_DATA((uint32_t)tmpChunk - 1U);
     assert(handle->chunkSize <= ((uint16_t)UINT16_MAX - tmpChunk));
