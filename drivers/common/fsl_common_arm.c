@@ -214,7 +214,7 @@ static void DelayLoop(uint32_t count)
  * @param delayTime_us  Delay time in unit of microsecond.
  * @param coreClock_Hz  Core clock frequency with Hz.
  */
-void SDK_DelayAtLeastUs(uint32_t delayTime_us, uint32_t coreClock_Hz)
+__attribute__((weak)) void SDK_DelayAtLeastUs(uint32_t delayTime_us, uint32_t coreClock_Hz)
 {
     uint64_t count;
 
