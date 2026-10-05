@@ -124,7 +124,7 @@ static flexspi_isr_t s_flexspiIsr;
 #if defined(__ICCARM__)
 #pragma optimize = none
 #endif /* defined(__ICCARM__) */
-static void FLEXSPI_Memset(void *src, uint8_t value, size_t length)
+AT_QUICKACCESS_SECTION_CODE(static void FLEXSPI_Memset(void *src, uint8_t value, size_t length))
 {
     assert(src != NULL);
     uint8_t *p = (uint8_t *)src;
@@ -145,7 +145,7 @@ static void FLEXSPI_Memset(void *src, uint8_t value, size_t length)
  * retval false Input LUT address is not allowed.
  * retval true Input LUT address is allowed.
  */
-static bool FLEXSPI_CheckInputLutLocation(FLEXSPI_Type *base, uint32_t lutAddr)
+AT_QUICKACCESS_SECTION_CODE(static bool FLEXSPI_CheckInputLutLocation(FLEXSPI_Type *base, uint32_t lutAddr))
 {
     uint32_t flexspiAMBABase[FSL_FEATURE_FLEXSPI_ARRAY_LEN][FLEXSPI_AMBA_BASE_ALIAS_COUNT] = FlexSPI_AMBA_BASE_ARRAY;
     uint32_t flexspiAMBAEnd[FSL_FEATURE_FLEXSPI_ARRAY_LEN][FLEXSPI_AMBA_BASE_ALIAS_COUNT] = FlexSPI_AMBA_END_ARRAY;
@@ -180,7 +180,7 @@ uint32_t FLEXSPI_GetInstance(FLEXSPI_Type *base)
     return instance;
 }
 
-static uint32_t FLEXSPI_CalculateDll(FLEXSPI_Type *base, flexspi_device_config_t *config)
+AT_QUICKACCESS_SECTION_CODE(static uint32_t FLEXSPI_CalculateDll(FLEXSPI_Type *base, flexspi_device_config_t *config))
 {
     bool isUnifiedConfig = true;
     uint32_t flexspiDllValue;
