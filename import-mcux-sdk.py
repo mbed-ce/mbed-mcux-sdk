@@ -140,6 +140,9 @@ needed_fsl_hal_drivers = [
 
     # Interconnects
     "xbara", # MIMXRT105x_6x
+
+    # RNG
+    "trng", # MIMXRT105x_6x
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
