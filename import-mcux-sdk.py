@@ -102,6 +102,7 @@ needed_fsl_hal_drivers = [
     # Power
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
+    "snvs_lp", # MIMXRT10xx
     "pmc", # KL43Z
     "rcm", # KL43Z
     "smc", # KL43Z
