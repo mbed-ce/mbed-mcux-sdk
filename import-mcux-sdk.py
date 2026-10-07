@@ -83,7 +83,7 @@ needed_fsl_hal_drivers = [
     "flexio", # All RT & Kinetis MCUs
     "i2c", # KL43Z
     "spi", # KL43Z
-    "uart", # KL43Z
+    "uart", # Kxx
     "dspi", # K6x
 
     # Audio (not currently used by Mbed)
@@ -97,18 +97,19 @@ needed_fsl_hal_drivers = [
     # Other analog
     "cmp", # KL43Z
     "dac", # KL43Z
-    "vref", # KL43Z
+    "vref", # Kxx
 
-    # Power
+    # Power & general control
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
     "snvs_lp", # MIMXRT10xx
     "pmc", # KL43Z
-    "rcm", # KL43Z
-    "smc", # KL43Z
+    "rcm", # Kxx
+    "smc", # Kxx
+    "sim", # K6x
 
     # DMA
-    "edma", # MIMXRT10xx
+    "edma", # Kxx & RT
     "dmamux", # All RT & Kinetis MCUs
     "dma", # KL43Z
 
@@ -117,8 +118,8 @@ needed_fsl_hal_drivers = [
 
     # GPIO
     "igpio", # MIMXRT10xx
-    "gpio", # KL43Z
-    "llwu", # KL43Z
+    "gpio", # Kxx
+    "llwu", # Kxx
     "port", # KL43Z
 
     # Timing
@@ -129,21 +130,29 @@ needed_fsl_hal_drivers = [
     "lptmr", # KL43Z
     "rtc", # KL43Z
     "tpm", # KL43Z
+    "cmt", #K6x
+    "ftm", #K6x
 
     # Watchdogs
     "cop", # KL43Z
     "rtwdog", # MIMXRT
     "wdog01", # MIMXRT10xx
+    "wdog", # K6x
 
-    # Flash access
+    # Flash memory
     "dsc_flash", # KL43Z
     "flexspi", # MIMXRT
+    "flash", #K6x
 
     # Interconnects
     "xbara", # MIMXRT105x_6x
 
     # RNG
     "trng", # MIMXRT105x_6x
+    "rnga", # K6x
+
+    # Security
+    "sysmpu", # K6x
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
