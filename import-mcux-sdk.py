@@ -78,10 +78,10 @@ needed_fsl_hal_drivers = [
 
     # Communications
     "lpi2c", # All RT & most Kinetis MCUs
-    "lpspi", # All RT & Kinetis MCUs
-    "lpuart", # All RT & Kinetis MCUs
+    "lpspi", # All RT & some Kinetis MCUs
+    "lpuart", # All RT & most Kinetis MCUs
     "flexio", # All RT & Kinetis MCUs
-    "i2c", # KL43Z
+    "i2c", # Kxx
     "spi", # KL43Z
     "uart", # Kxx
     "dspi", # K6x

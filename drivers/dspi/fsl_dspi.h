@@ -31,7 +31,7 @@
 #endif
 
 /*! @brief Global variable for dummy data value setting. */
-extern volatile uint8_t g_dspiDummyData[];
+extern volatile uint16_t g_dspiDummyData[];
 
 /*! @brief Status for the DSPI driver.*/
 enum

@@ -1,5 +1,4 @@
-﻿I am working on MK64F support in Mbed Community Edition, and noticed some issues related to the dummy 
-data support in the DSPI peripheral driver. Specifically:
+﻿I noticed some issues related to the dummy data support in the DSPI peripheral driver. Specifically:
 
 * For transfers done using the fsl_dspi driver, if the SPI frame size is >8, the upper 8 bits are always 
     sent as 0s, regardless of dummy data setting.
@@ -93,6 +92,15 @@ diff --git a/drivers/dspi/fsl_dspi.h b/drivers/dspi/fsl_dspi.h
 index 27428ad..0a87cc5 100644
 --- a/drivers/dspi/fsl_dspi.h
 +++ b/drivers/dspi/fsl_dspi.h
+@@ -31,7 +31,7 @@
+ #endif
+ 
+ /*! @brief Global variable for dummy data value setting. */
+-extern volatile uint8_t g_dspiDummyData[];
++extern volatile uint16_t g_dspiDummyData[];
+ 
+ /*! @brief Status for the DSPI driver.*/
+ enum
 @@ -1073,9 +1073,20 @@ static inline uint32_t DSPI_ReadData(SPI_Type *base)
   *
   * @param base DSPI peripheral address.
