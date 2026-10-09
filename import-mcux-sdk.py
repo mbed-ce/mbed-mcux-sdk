@@ -153,6 +153,9 @@ needed_fsl_hal_drivers = [
 
     # Security
     "sysmpu", # K6x
+
+    # CRC
+    "crc" # K6x
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
