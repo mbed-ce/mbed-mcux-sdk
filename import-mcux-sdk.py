@@ -23,7 +23,7 @@ def fetch_latest_sdk_repo(repo_name: str, git_url: str, git_branch: str = "main"
     if (cloned_path / ".git").is_dir():
         print(f"{repo_name} already cloned, pulling latest...")
         subprocess.check_call([GIT_PATH, "checkout", git_branch], cwd=cloned_path)
-        subprocess.check_call([GIT_PATH, "pull", "origin"], cwd=cloned_path)
+        # subprocess.check_call([GIT_PATH, "pull", "origin"], cwd=cloned_path)
     else:
         print(f"Cloning {repo_name} -> {cloned_path!s} ...")
         cloned_path.mkdir(parents=True, exist_ok=True)
@@ -82,36 +82,37 @@ needed_fsl_hal_drivers = [
     "lpuart", # All RT & most Kinetis MCUs
     "flexio", # All RT & Kinetis MCUs
     "i2c", # Kxx
-    "spi", # KL43Z
+    "spi", # KL4x
     "uart", # Kxx
     "dspi", # K6x
 
     # Audio (not currently used by Mbed)
-    "sai", # KL43Z
+    "sai", # Kxx
 
     # ADCs
-    "adc16", # KL43Z
+    "adc16", # Kxx
     "adc_12b1msps_sar", # MIMXRT10xx
     "adc_etc", # MIMXRT10xx
 
     # Other analog
-    "cmp", # KL43Z
-    "dac", # KL43Z
+    "cmp", # KL4x, K2x
+    "dac", # KL4x
     "vref", # Kxx
 
     # Power & general control
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
     "snvs_lp", # MIMXRT10xx
-    "pmc", # KL43Z
+    "pmc", # KL4x
     "rcm", # Kxx
     "smc", # Kxx
-    "sim", # K6x
+    "sim", # K6x, K2x
+    "mcm", # K2x
 
     # DMA
     "edma", # Kxx & RT
     "dmamux", # All RT & Kinetis MCUs
-    "dma", # KL43Z
+    "dma", # KL4x
 
     # Network
     "enet", # MIMXRT10xx
@@ -120,29 +121,29 @@ needed_fsl_hal_drivers = [
     "igpio", # MIMXRT10xx
     "gpio", # Kxx
     "llwu", # Kxx
-    "port", # KL43Z
+    "port", # Kxx
 
     # Timing
     "qtmr_1", # MIMXRT10xx
     "pwm", # MIMXRT10xx
     "gpt", # MIMXRT10xx
     "pit", # All RT & Kinetis MCUs
-    "lptmr", # KL43Z
-    "rtc", # KL43Z
-    "tpm", # KL43Z
-    "cmt", #K6x
-    "ftm", #K6x
+    "lptmr", # Kxx
+    "rtc", # Kxx
+    "tpm", # KL4x
+    "cmt", # K6x
+    "ftm", # K6x, K2x
 
     # Watchdogs
-    "cop", # KL43Z
+    "cop", # KL4x
     "rtwdog", # MIMXRT
     "wdog01", # MIMXRT10xx
-    "wdog", # K6x
+    "wdog", # K6x, K2x
 
     # Flash memory
-    "dsc_flash", # KL43Z
+    "dsc_flash", # KL4x
     "flexspi", # MIMXRT
-    "flash", #K6x
+    "flash", # Kxx
 
     # Interconnects
     "xbara", # MIMXRT105x_6x
@@ -153,9 +154,10 @@ needed_fsl_hal_drivers = [
 
     # Security
     "sysmpu", # K6x
+    "aipstz", # K2x
 
     # CRC
-    "crc" # K6x
+    "crc" # Kxx
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
