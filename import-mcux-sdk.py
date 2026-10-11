@@ -23,7 +23,7 @@ def fetch_latest_sdk_repo(repo_name: str, git_url: str, git_branch: str = "main"
     if (cloned_path / ".git").is_dir():
         print(f"{repo_name} already cloned, pulling latest...")
         subprocess.check_call([GIT_PATH, "checkout", git_branch], cwd=cloned_path)
-        # subprocess.check_call([GIT_PATH, "pull", "origin"], cwd=cloned_path)
+        subprocess.check_call([GIT_PATH, "pull", "origin"], cwd=cloned_path)
     else:
         print(f"Cloning {repo_name} -> {cloned_path!s} ...")
         cloned_path.mkdir(parents=True, exist_ok=True)
@@ -81,69 +81,69 @@ needed_fsl_hal_drivers = [
     "lpspi", # All RT & some Kinetis MCUs
     "lpuart", # All RT & most Kinetis MCUs
     "flexio", # All RT & Kinetis MCUs
-    "i2c", # Kxx
-    "spi", # KL4x
-    "uart", # Kxx
-    "dspi", # K6x
+    "i2c", # K series
+    "spi", # KL series
+    "uart", # most Kinetis
+    "dspi", # K series
+    "qspi", # K82F
 
     # Audio (not currently used by Mbed)
-    "sai", # Kxx
+    "sai", # K series
 
     # ADCs
-    "adc16", # Kxx
+    "adc16", # all Kinetis
     "adc_12b1msps_sar", # MIMXRT10xx
     "adc_etc", # MIMXRT10xx
 
     # Other analog
-    "cmp", # KL4x, K2x
-    "dac", # KL4x
-    "vref", # Kxx
+    "cmp", # KL series, K2x
+    "dac", # KL series
+    "vref", # K series
 
     # Power & general control
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
     "snvs_lp", # MIMXRT10xx
-    "pmc", # KL4x
-    "rcm", # Kxx
-    "smc", # Kxx
-    "sim", # K6x, K2x
+    "pmc", # KL series
+    "rcm", # K series
+    "smc", # K series
+    "sim", # K series
     "mcm", # K2x
 
     # DMA
-    "edma", # Kxx & RT
+    "edma", # K series & RT
     "dmamux", # All RT & Kinetis MCUs
-    "dma", # KL4x
+    "dma", # KL series
 
     # Network
     "enet", # MIMXRT10xx
 
     # GPIO
     "igpio", # MIMXRT10xx
-    "gpio", # Kxx
-    "llwu", # Kxx
-    "port", # Kxx
+    "gpio", # K series
+    "llwu", # K series
+    "port", # K series
 
     # Timing
     "qtmr_1", # MIMXRT10xx
     "pwm", # MIMXRT10xx
     "gpt", # MIMXRT10xx
     "pit", # All RT & Kinetis MCUs
-    "lptmr", # Kxx
-    "rtc", # Kxx
-    "tpm", # KL4x
-    "cmt", # K6x
+    "lptmr", # K series
+    "rtc", # K series
+    "tpm", # KL series
     "ftm", # K6x, K2x
 
     # Watchdogs
-    "cop", # KL4x
+    "cop", # KL series
     "rtwdog", # MIMXRT
     "wdog01", # MIMXRT10xx
     "wdog", # K6x, K2x
 
     # Flash memory
-    "dsc_flash", # KL4x
+    "dsc_flash", # KL series
     "flexspi", # MIMXRT
-    "flash", # Kxx
+    "flash", # K series
 
     # Interconnects
     "xbara", # MIMXRT105x_6x
@@ -154,10 +154,9 @@ needed_fsl_hal_drivers = [
 
     # Security
     "sysmpu", # K6x
-    "aipstz", # K2x
 
     # CRC
-    "crc" # Kxx
+    "crc" # K series
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
