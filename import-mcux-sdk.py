@@ -67,9 +67,6 @@ shutil.copytree(mcux_devices_rt_path / "RT1180" / "periph", devices_path / "mimx
 # LPC MCUs
 shutil.copytree(mcux_devices_lpc_path / "LPC54000" / "LPC54628", devices_path / "lpc" / "LPC54628", dirs_exist_ok=True)
 
-# Legacy LPC MCUs
-shutil.copytree(legacy_mcux_sdk_path / "devices" / "LPC54114", devices_path / "lpc" / "LPC54114", dirs_exist_ok=True)
-
 # Drivers
 # This list is the sum total of all MCUX SDK drivers need by any and all NXP MCUs supported by Mbed.
 # Upper-level CMake code is responsible for adding the correct drivers to the correct MCUs.
@@ -86,6 +83,10 @@ needed_fsl_hal_drivers = [
     "uart", # most Kinetis
     "dspi", # K series
     "qspi", # K82F
+    "flexcomm", # LPC5xxxx
+    "lpc_enet", # LPC5xxxx
+    "mcan", # LPC5xxxx
+    "spifi", # LPC5xxxx
 
     # Audio (not currently used by Mbed)
     "sai", # K series
@@ -94,6 +95,7 @@ needed_fsl_hal_drivers = [
     "adc16", # all Kinetis
     "adc_12b1msps_sar", # MIMXRT10xx
     "adc_etc", # MIMXRT10xx
+    "lpc_adc", # LPC5xxxx
 
     # Other analog
     "cmp", # KL series, K2x
@@ -114,6 +116,7 @@ needed_fsl_hal_drivers = [
     "edma", # K series & RT
     "dmamux", # All RT & Kinetis MCUs
     "dma", # KL series
+    "lpc_dma", # LPC5xxxx
 
     # Network
     "enet", # MIMXRT10xx
@@ -123,6 +126,11 @@ needed_fsl_hal_drivers = [
     "gpio", # K series
     "llwu", # K series
     "port", # K series
+    "gint", # LPC5xxxx
+    "lpc_gpio", # LPC5xxxx
+    "inputmux", # LPC5xxxx
+    "lpc_iocon", # LPC5xxxx
+    "pint", # LPC5xxxx
 
     # Timing
     "qtmr_1", # MIMXRT10xx
@@ -133,6 +141,14 @@ needed_fsl_hal_drivers = [
     "rtc", # K series
     "tpm", # KL series
     "ftm", # K6x, K2x
+    "fmeas", # LPC5xxxx
+    "ctimer", # LPC5xxxx
+    "mrt", # LPC5xxxx
+    "lpc_rit", # LPC5xxxx
+    "lpc_rtc", # LPC5xxxx
+    "sctimer", # LPC5xxxx
+    "wwdt", # LPC5xxxx
+    "utick", # LPC5xxxx
 
     # Watchdogs
     "cop", # KL series
@@ -144,6 +160,9 @@ needed_fsl_hal_drivers = [
     "dsc_flash", # KL series
     "flexspi", # MIMXRT
     "flash", # K series
+    "flashiap", # LPC5xxxx
+    "fmc", # LPC5xxxx
+    "otp", # LPC5xxxx
 
     # Interconnects
     "xbara", # MIMXRT105x_6x
@@ -151,12 +170,14 @@ needed_fsl_hal_drivers = [
     # RNG
     "trng", # MIMXRT105x_6x
     "rnga", # K6x
+    "rng", # LPC5xxxx
 
     # Security
     "sysmpu", # K6x
 
-    # CRC
-    "crc" # K series
+    # CRC / Hash
+    "crc", # K series
+    "sha", # LPC5xxxx
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
