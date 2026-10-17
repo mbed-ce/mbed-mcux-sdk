@@ -66,6 +66,7 @@ shutil.copytree(mcux_devices_rt_path / "RT1180" / "periph", devices_path / "mimx
 
 # LPC MCUs
 shutil.copytree(mcux_devices_lpc_path / "LPC54000" / "LPC54628", devices_path / "lpc" / "LPC54628", dirs_exist_ok=True)
+shutil.copytree(mcux_devices_lpc_path / "LPC54000" / "periph", devices_path / "lpc" / "LPC54628" / "periph", dirs_exist_ok=True)
 
 # Drivers
 # This list is the sum total of all MCUX SDK drivers need by any and all NXP MCUs supported by Mbed.
@@ -147,7 +148,6 @@ needed_fsl_hal_drivers = [
     "lpc_rit", # LPC5xxxx
     "lpc_rtc", # LPC5xxxx
     "sctimer", # LPC5xxxx
-    "wwdt", # LPC5xxxx
     "utick", # LPC5xxxx
 
     # Watchdogs
@@ -155,6 +155,7 @@ needed_fsl_hal_drivers = [
     "rtwdog", # MIMXRT
     "wdog01", # MIMXRT10xx
     "wdog", # K6x, K2x
+    "wwdt", # LPC5xxxx
 
     # Flash memory
     "dsc_flash", # KL series
