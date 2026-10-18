@@ -73,6 +73,7 @@ shutil.copytree(mcux_devices_lpc_path / "LPC54000" / "periph", devices_path / "l
 # Upper-level CMake code is responsible for adding the correct drivers to the correct MCUs.
 needed_fsl_hal_drivers = [
     "common",
+    "cache",
 
     # Communications
     "lpi2c", # All RT & most Kinetis MCUs
@@ -111,7 +112,7 @@ needed_fsl_hal_drivers = [
     # Power & general control
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
-    "snvs_lp", # RT116x/7x, RT118x
+    "snvs_lp", # MIMXRT10xx, MIMXRT116x/7x
     "pmc", # KL series
     "rcm", # K series
     "smc", # K series
