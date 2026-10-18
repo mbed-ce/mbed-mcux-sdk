@@ -88,6 +88,8 @@ needed_fsl_hal_drivers = [
     "lpc_enet", # LPC5xxxx
     "mcan", # LPC5xxxx
     "spifi", # LPC5xxxx
+    "flexcan", # All RT
+    "usdhc", # All RT
 
     # Audio (not currently used by Mbed)
     "sai", # K series
@@ -95,23 +97,28 @@ needed_fsl_hal_drivers = [
     # ADCs
     "adc16", # all Kinetis
     "adc_12b1msps_sar", # MIMXRT10xx
-    "adc_etc", # MIMXRT10xx
+    "adc_etc", # MIMXRT10xx, MIMXRT116x/7x
+    "lpadc", # RT116x/7x, RT118x
     "lpc_adc", # LPC5xxxx
 
     # Other analog
     "cmp", # KL series, K2x
     "dac", # KL series
     "vref", # K series
+    "dac12", # MIMXRT116x/7x
+    "tempsensor", # RT116x/7x, RT118x
 
     # Power & general control
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
-    "snvs_lp", # MIMXRT10xx
+    "snvs_lp", # RT116x/7x, RT118x
     "pmc", # KL series
     "rcm", # K series
     "smc", # K series
     "sim", # K series
-    "mcm", # K2x
+    "mcm", # K2x, RT116x/7x
+    "mecc", # MIMXRT116x/7x
+    "xecc", # MIMXRT116x/7x
 
     # DMA
     "edma", # K series & RT
@@ -120,10 +127,10 @@ needed_fsl_hal_drivers = [
     "lpc_dma", # LPC5xxxx
 
     # Network
-    "enet", # MIMXRT10xx
+    "enet", # RT10xx, RT116x/7x
 
     # GPIO
-    "igpio", # MIMXRT10xx
+    "igpio", # RT10xx, RT116x/7x
     "gpio", # K series
     "llwu", # K series
     "port", # K series
@@ -134,10 +141,10 @@ needed_fsl_hal_drivers = [
     "pint", # LPC5xxxx
 
     # Timing
-    "qtmr_1", # MIMXRT10xx
-    "pwm", # MIMXRT10xx
-    "gpt", # MIMXRT10xx
-    "pit", # All RT & Kinetis MCUs
+    "qtmr_1", # RT116x/7x, RT118x
+    "pwm", # All RT
+    "gpt", # All RT
+    "pit", # RT10xx, RT116x/7x, all Kinetis MCUs
     "lptmr", # K series
     "rtc", # K series
     "tpm", # KL series
@@ -152,8 +159,8 @@ needed_fsl_hal_drivers = [
 
     # Watchdogs
     "cop", # KL series
-    "rtwdog", # MIMXRT
-    "wdog01", # MIMXRT10xx
+    "rtwdog", # All RT
+    "wdog01", # RT10xx, RT116x/7x
     "wdog", # K6x, K2x
     "wwdt", # LPC5xxxx
 
@@ -164,9 +171,10 @@ needed_fsl_hal_drivers = [
     "flashiap", # LPC5xxxx
     "fmc", # LPC5xxxx
     "otp", # LPC5xxxx
+    "ocotp", # RT10xx, RT116x/7x
 
     # Interconnects
-    "xbara", # MIMXRT105x_6x
+    "xbara", # RT10xx, RT116x/7x
 
     # RNG
     "trng", # MIMXRT105x_6x
@@ -176,12 +184,22 @@ needed_fsl_hal_drivers = [
     # Security
     "sysmpu", # K6x
 
-    # CRC / Hash
+    # CRC / Hash / Encryption
     "crc", # K series
     "sha", # LPC5xxxx
+    "caam", # MIMXRT116x/7x
+    "key_manager", # MIMXRT116x/7x
+    "puf", # MIMXRT116x/7x
 
     # External memories
     "emc", # LPC5xxxx
+
+    # Inter-core communication
+    "mu", # MIMXRT116x/7x
+    "rdc", # MIMXRT116x/7x
+    "rdc_sema42", # MIMXRT116x/7x
+    "xrdc2", # MIMXRT116x/7x
+    "sema4", # MIMXRT116x/7x
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
