@@ -179,6 +179,9 @@ needed_fsl_hal_drivers = [
     # CRC / Hash
     "crc", # K series
     "sha", # LPC5xxxx
+
+    # External memories
+    "emc", # LPC5xxxx
 ]
 
 drivers_path = REPO_BASE_DIR / "drivers"
