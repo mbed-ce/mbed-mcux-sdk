@@ -105,7 +105,7 @@ needed_fsl_hal_drivers = [
     # Other analog
     "cmp", # KL series, K2x
     "dac", # KL series
-    "vref", # K series
+    "vref", # K series, KWx1
     "dac12", # MIMXRT116x/7x
     "tempsensor", # RT116x/7x, RT118x
 
@@ -113,13 +113,14 @@ needed_fsl_hal_drivers = [
     "dcdc_1", # MIMXRT10xx
     "gpc_1", # MIMXRT10xx
     "snvs_lp", # MIMXRT10xx, MIMXRT116x/7x
-    "pmc", # KL series
-    "rcm", # K series
+    "pmc", # KL series, KWx1
+    "rcm", # K series, KWx1
     "smc", # K series
-    "sim", # K series
+    "sim", # K series, KWx1
     "mcm", # K2x, RT116x/7x
     "mecc", # MIMXRT116x/7x
     "xecc", # MIMXRT116x/7x
+    "dcdc", # KWx1
 
     # DMA
     "edma", # K series & RT
@@ -178,19 +179,20 @@ needed_fsl_hal_drivers = [
     "xbara", # RT10xx, RT116x/7x
 
     # RNG
-    "trng", # MIMXRT105x_6x
+    "trng", # MIMXRT105x_6x, KWx1
     "rnga", # K6x
     "rng", # LPC5xxxx
 
     # Security
     "sysmpu", # K6x
-
-    # CRC / Hash / Encryption
-    "crc", # K series
-    "sha", # LPC5xxxx
+    "ltc", # KWx1
     "caam", # MIMXRT116x/7x
     "key_manager", # MIMXRT116x/7x
     "puf", # MIMXRT116x/7x
+
+    # CRC / Hash
+    "crc", # K series
+    "sha", # LPC5xxxx
 
     # External memories
     "emc", # LPC5xxxx
