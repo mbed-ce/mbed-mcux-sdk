@@ -103,8 +103,8 @@ needed_fsl_hal_drivers = [
     "lpc_adc", # LPC5xxxx
 
     # Other analog
-    "cmp", # KL series, K2x
-    "dac", # KL series
+    "cmp", # KL series, K2x, KWx1
+    "dac", # KL series, KWx1
     "vref", # K series, KWx1
     "dac12", # MIMXRT116x/7x
     "tempsensor", # RT116x/7x, RT118x
@@ -115,7 +115,7 @@ needed_fsl_hal_drivers = [
     "snvs_lp", # MIMXRT10xx, MIMXRT116x/7x
     "pmc", # KL series, KWx1
     "rcm", # K series, KWx1
-    "smc", # K series
+    "smc", # K series, KWx1
     "sim", # K series, KWx1
     "mcm", # K2x, RT116x/7x
     "mecc", # MIMXRT116x/7x
@@ -133,8 +133,8 @@ needed_fsl_hal_drivers = [
 
     # GPIO
     "igpio", # RT10xx, RT116x/7x
-    "gpio", # K series
-    "llwu", # K series
+    "gpio", # All Kinetis
+    "llwu", # All Kinetis
     "port", # K series
     "gint", # LPC5xxxx
     "lpc_gpio", # LPC5xxxx
@@ -147,9 +147,9 @@ needed_fsl_hal_drivers = [
     "pwm", # All RT
     "gpt", # All RT
     "pit", # RT10xx, RT116x/7x, all Kinetis MCUs
-    "lptmr", # K series
-    "rtc", # K series
-    "tpm", # KL series
+    "lptmr", # All Kinetis
+    "rtc", # All Kinetis
+    "tpm", # KL series, KWx1
     "ftm", # K6x, K2x
     "fmeas", # LPC5xxxx
     "ctimer", # LPC5xxxx
@@ -160,7 +160,7 @@ needed_fsl_hal_drivers = [
     "utick", # LPC5xxxx
 
     # Watchdogs
-    "cop", # KL series
+    "cop", # KL series, KWx1
     "rtwdog", # All RT
     "wdog01", # RT10xx, RT116x/7x
     "wdog", # K6x, K2x
@@ -169,7 +169,7 @@ needed_fsl_hal_drivers = [
     # Flash memory
     "dsc_flash", # KL series
     "flexspi", # MIMXRT
-    "flash", # K series
+    "flash", # K series, KWx1
     "flashiap", # LPC5xxxx
     "fmc", # LPC5xxxx
     "otp", # LPC5xxxx
